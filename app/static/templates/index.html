@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Users</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Random Users</h1>
+
+        <div class="controls">
+            <div class="input-group">
+                <label for="userCount">Количество пользователей:</label>
+                <input type="number" id="userCount" min="1" value="10">
+                <button id="loadUsers">Загрузить</button>
+            </div>
+            <button id="clearAll">Очистить всех</button>
+        </div>
+
+        <div class="table-container">
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Фото</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Пол</th>
+                        <th>Email</th>
+                        <th>Телефон</th>
+                        <th>Место проживания</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button id="prevPage" disabled>Назад</button>
+            <span id="pageInfo">Страница 1</span>
+            <button id="nextPage">Вперед</button>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
