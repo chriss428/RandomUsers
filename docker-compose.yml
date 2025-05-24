@@ -1,0 +1,21 @@
+services:
+  my-app:
+    image: test
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: Test
+      DB_USER: postgres
+      DB_PASS: test
+    ports:
+      - 1500:8000
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: "Test"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "test"
+    ports:
+      - 5432:5432
