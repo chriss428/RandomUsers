@@ -64,3 +64,12 @@ PostgreSQL была выбрана в качестве системы управ
    uvicorn app.main:app
 
 9. **Перейдите по ссылке: http://localhost:8000**
+
+Если возникает ошибка при запуске на Windows, попробуйте внести следующие изменения в файле routers.py: 
+
+- 12 строка: 
+    ```python
+    templates_directory = os.path.abspath("app/static/templates")
+- 18 строка
+    ```python
+    file_path = os.path.abspath("app/static/templates/index.html")

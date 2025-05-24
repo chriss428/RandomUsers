@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadUsersBtn.addEventListener('click', async function() {
         const count = parseInt(userCountInput.value);
-        if (count > 0) {
+        if (count > 0 && count < 5001) {
             try {
                 const response = await fetch('/', {
                     method: 'POST',
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert(error.message);
             }
         } else {
-            alert('Введите корректное число пользователей');
+            alert('Введите число от 1 до 5000');
         }
     });
 

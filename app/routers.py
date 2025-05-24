@@ -17,7 +17,7 @@ templates = Jinja2Templates(directory=templates_directory)
 async def read_root():
     file_path = os.path.abspath("static/templates/index.html")
 
-    with open(file_path) as f:
+    with open(file_path, encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), status_code=200)
 
 
