@@ -10,7 +10,7 @@ from app.routers import router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    fetch_data(1000)
+    await fetch_data(1000)
     yield
 
 app = FastAPI(lifespan=lifespan)

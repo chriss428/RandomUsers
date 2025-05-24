@@ -1,16 +1,19 @@
-import requests
+import httpx
 from sqlalchemy import select, func, delete
+from sqlalchemy.exc import SQLAlchemyError
 
-from app.database import Session
+from app.database import async_session_maker
 from app.models import User
 from app.schemas import User as UserSchema
 
 
-def fetch_data(n: int):
-    response = requests.get(f'https://randomuser.me/api/?results={n}')
-    data_dict = response.json()["results"]
+async def fetch_data(n: int):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f'https://randomuser.me/api/?results={n}')
+        data_dict = response.json()["results"]
 
-    with Session() as session:
+
+    async with async_session_maker() as session:
         try:
             for data in data_dict:
                 user = User(
@@ -26,38 +29,48 @@ def fetch_data(n: int):
                 )
 
                 session.add(user)
-            session.commit()
-        except Exception as e:
-            session.rollback()
+            await session.commit()
+        except SQLAlchemyError as e:
+            await session.rollback()
             print(f"Database error: {e}")
+            raise
 
-def user_by_id(user_id: int) -> UserSchema:
-    with Session() as session:
+async def user_by_id(user_id: int) -> UserSchema:
+    async with async_session_maker() as session:
         query = select(User).where(User.id == user_id)
-        result = session.execute(query)
+        result = await session.execute(query)
         user = result.scalar_one_or_none()
         if user:
             return UserSchema.model_validate(user)
     return None
 
-def random_user() -> UserSchema:
-    with Session() as session:
+async def random_user() -> UserSchema:
+    async with async_session_maker() as session:
         query = select(User).order_by(func.random())
-        result = session.execute(query)
+        result = await session.execute(query)
         user = result.scalars().first()
         if user:
             return UserSchema.model_validate(user)
     return None
 
-def del_all_users():
-    with Session() as session:
-        data = delete(User)
-        session.execute(data)
-        session.commit()
+async def del_all_users():
+    async with async_session_maker() as session:
+        try:
+            data = delete(User)
+            await session.execute(data)
+            await session.commit()
+        except SQLAlchemyError as e:
+            await session.rollback()
+            print(f"Database error: {e}")
+            raise
 
-def all_users(skip: int, limit: int):
-    with Session() as session:
-        query = select(User).offset(skip).limit(limit)
-        result = session.execute(query)
-        users = result.scalars().all()
-        return [UserSchema.model_validate(user) for user in users]
+async def all_users(skip: int, limit: int):
+    async with async_session_maker() as session:
+        try:
+            query = select(User).offset(skip).limit(limit)
+            result = await session.execute(query)
+            users = result.scalars().all()
+            return [UserSchema.model_validate(user) for user in users]
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            raise
