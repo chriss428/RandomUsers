@@ -9,13 +9,13 @@ from app.crud import user_by_id, random_user, fetch_data, del_all_users, all_use
 router = APIRouter()
 
 
-templates_directory = os.path.abspath("static/templates")
+templates_directory = os.path.abspath("app/static/templates")
 templates = Jinja2Templates(directory=templates_directory)
 
 
 @router.get("/", response_class=HTMLResponse)
 async def read_root():
-    file_path = os.path.abspath("static/templates/index.html")
+    file_path = os.path.abspath("app/static/templates/index.html")
 
     with open(file_path, encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), status_code=200)
