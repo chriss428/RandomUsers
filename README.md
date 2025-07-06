@@ -26,6 +26,15 @@ PostgreSQL была выбрана в качестве системы управ
 
 ## Установка и запуск
 
+### В контейнере
+
+1. **Запустите compose файл:**
+    ```bash
+   docker compose up -d
+2. **Перейдите по адресу:**
+    ```bash
+    localhost:1500
+
 ### Локально
 
 1. **Установите и настройте  PostgreSQL**
@@ -77,12 +86,3 @@ PostgreSQL была выбрана в качестве системы управ
     ```python
     file_path = os.path.abspath("app/static/templates/index.html")
   
-### В контейнере
-
-1. **Создайте образ с помощью команды:**
-    ```bash
-   docker build -t test .
-
-2. **Запустите compose сборку:**
-    ```bash
-   docker compose up
